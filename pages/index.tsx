@@ -1,12 +1,11 @@
-import DatamatrixBarcode from '@/pages/Canvas/Canvas'
-import GermanVisa from './Seals/GermanVisa'
+import DatamatrixBarcode from "@/components/DatamatrixBarcode/DatamatrixBarcode";
+import GermanVisa from "@/components/Seals/GermanVisa";
 
 export default function Home() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello</h1>
-      <DatamatrixBarcode content={ new Uint8Array} />
       <GermanVisa />
+      <DatamatrixBarcode content={new Uint8Array()} />
     </>
-  )
+  );
 }
