@@ -14,6 +14,6 @@ export default class ArrayChunks<Item> implements Iterable<Item[]> {
   }
 
   remainingItems(): Item[] {
-    return this.array.slice(this.array.length / this.stride, undefined)
+    return this.array.slice(this.stride * Math.floor(this.array.length / this.stride), undefined)
   }
 }
