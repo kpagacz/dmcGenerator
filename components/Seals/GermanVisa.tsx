@@ -1,7 +1,9 @@
+import C40 from "@/lib/seal/C40";
+import Visa from "@/lib/types/Visa";
 import { useState } from "react";
 
 export default function GermanVisa() {
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState<Visa>({});
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -12,6 +14,10 @@ export default function GermanVisa() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(inputs);
+
+    const c40 = new C40();
+    const signerBytes = c40.encode(inputs.signer);
+    console.log(signerBytes);
   };
 
   return (
