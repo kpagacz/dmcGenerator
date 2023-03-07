@@ -53,16 +53,15 @@ export default class C40 {
     const strideIterator = new ArrayChunks<string>(Array.from(text), 3);
     const encodedBytes: number[] = [];
     for (let [first, second, third] of strideIterator) {
-      console.log(first, second, third);
-      console.log(C40.asciiToC40.get(first) ?? 0, C40.asciiToC40.get(second) ?? 0, C40.asciiToC40.get(third) ?? 0);
+      // console.log(first, second, third);
+      // console.log(C40.asciiToC40.get(first) ?? 0, C40.asciiToC40.get(second) ?? 0, C40.asciiToC40.get(third) ?? 0);
       const U = (C40.asciiToC40.get(first) ?? 0) * 1600
         + (C40.asciiToC40.get(second) ?? 0) * 40 + (C40.asciiToC40.get(third) ?? 0) + 1;
-      console.log("U: ", U);
       encodedBytes.push(Math.floor(U / 256));
       encodedBytes.push(U % 256);
     }
     const remainingItems = strideIterator.remainingItems();
-    console.log("Remaining items: ", remainingItems);
+    // console.log("Remaining items: ", remainingItems);
     if (remainingItems.length === 1) {
       encodedBytes.push(254);
       encodedBytes.push(remainingItems[0].charCodeAt(0) + 1);

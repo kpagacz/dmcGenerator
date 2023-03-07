@@ -1,9 +1,11 @@
 import C40 from "@/lib/seal/C40";
+import DateEncoder from "@/lib/seal/DateEncoder";
+import SealEncoder from "@/lib/seal/SealEncoder";
 import Visa from "@/lib/types/Visa";
 import { useState } from "react";
 
 export default function GermanVisa() {
-  const [inputs, setInputs] = useState<Visa>({});
+  const [inputs, setInputs] = useState<Visa>({} as Visa);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -15,9 +17,10 @@ export default function GermanVisa() {
     event.preventDefault();
     console.log(inputs);
 
-    const c40 = new C40();
-    const signerBytes = c40.encode(inputs.signer);
-    console.log(signerBytes);
+    const sealEncoder = new SealEncoder();
+    let encodedSeal = sealEncoder.encodeVisaToUTF8(inputs);
+    const hex = Buffer.from(encodedSeal).toString("hex");
+    console.log(hex);
   };
 
   return (
