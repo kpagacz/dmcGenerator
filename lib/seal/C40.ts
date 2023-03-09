@@ -65,13 +65,14 @@ export default class C40 {
     if (remainingItems.length === 1) {
       encodedBytes.push(254);
       encodedBytes.push(remainingItems[0].charCodeAt(0) + 1);
-    } else {
+    } else if (remainingItems.length === 2) {
       const [first, second] = remainingItems;
       const U = (C40.asciiToC40.get(first) ?? 0) * 1600
         + (C40.asciiToC40.get(second) ?? 0) * 40 + 1;
       encodedBytes.push(Math.floor(U / 256));
       encodedBytes.push(U % 256);
     }
+    // console.log("Encoded bytes in C40: ", encodedBytes);
     return Uint8Array.from(encodedBytes);
   }
 }

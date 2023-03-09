@@ -8,33 +8,30 @@ export default class SealEncoder {
   private dateEncoder = new DateEncoder();
 
   encodeVisaToUTF8(visa: Visa): string {
-    let decodedSeal = "";
-
-    decodedSeal += this.textDecoder.decode(Uint8Array.from([visa.magicConstant]));
-    decodedSeal += this.textDecoder.decode(Uint8Array.from([visa.version - 1]));
-
-    decodedSeal += this.textDecoder.decode(this.c40.encode(visa.countryId.padEnd(3, "<")));
-    // TODO: Encode signer and certificate reference properly
-    decodedSeal += visa.signer;
-    decodedSeal += this.textDecoder.decode(Uint8Array.from([visa.certificateReference]));
-
-    decodedSeal += this.textDecoder.decode(this.dateEncoder.encode(new Date(visa.documentIssueDate)));
-    decodedSeal += this.textDecoder.decode(this.dateEncoder.encode(new Date(visa.signatureCreationDate)));
-
-    decodedSeal += this.textDecoder.decode(Uint8Array.from([visa.documentFeatureDefinitionReference]));
-    decodedSeal += this.textDecoder.decode(Uint8Array.from([visa.documentTypeCategory]));
-
-    return decodedSeal;
+    return this.textDecoder.decode(this.encodeVisa(visa));
   }
 
   encodeVisa(visa: Visa): Uint8Array {
     const encodedSeal = [];
 
-    // TODO: finish this method
-    encodedSeal.push(visa.magicConstant);
-    encodedSeal.push(visa.version - 1);
+    // Header
+    encodedSeal.push(Number(visa.magicConstant));
+    encodedSeal.push(Number(visa.version) - 1);
     encodedSeal.push(...this.c40.encode(visa.countryId.padEnd(3, "<")));
+    encodedSeal.push(...this.c40.encode(visa.signer.concat(visa.certificateReference)));
+    const issueDate = new Date(visa.documentIssueDate);
+    encodedSeal.push(...this.dateEncoder.encode(issueDate));
+    const signatureDate = new Date(visa.signatureCreationDate);
+    encodedSeal.push(...this.dateEncoder.encode(signatureDate));
+    encodedSeal.push(Number(visa.documentFeatureDefinitionReference));
+    encodedSeal.push(Number(visa.documentTypeCategory));
 
+    // Document Features
+
+
+    // Signature
+
+    console.log(encodedSeal);
     return Uint8Array.from(encodedSeal);
   }
 }

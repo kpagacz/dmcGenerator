@@ -3,7 +3,7 @@ export default interface Visa {
   version: number;
   countryId: string;
   signer: string;
-  certificateReference: number;
+  certificateReference: string;
   documentIssueDate: Date;
   signatureCreationDate: Date;
   documentFeatureDefinitionReference: number;

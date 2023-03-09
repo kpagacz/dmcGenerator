@@ -1,28 +1,73 @@
-import C40 from "@/lib/seal/C40";
-import DateEncoder from "@/lib/seal/DateEncoder";
 import SealEncoder from "@/lib/seal/SealEncoder";
 import Visa from "@/lib/types/Visa";
-import { useState } from "react";
+import DocumentFeature from "@/lib/types/DocumentFeature";
+import { useState, MouseEvent } from "react";
 
 export default function GermanVisa() {
-  const [inputs, setInputs] = useState<Visa>({} as Visa);
+  const [headerInput, setHeaderInputs] = useState<Visa>({} as Visa);
+  const [documentFeatures, setDocumentFeatures] = useState<
+    { id: number; feature: DocumentFeature }[]
+  >([]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
+    setHeaderInputs((values) => ({ ...values, [name]: value }));
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(inputs);
+    console.log(headerInput);
 
     const sealEncoder = new SealEncoder();
-    let encodedSeal = sealEncoder.encodeVisaToUTF8(inputs);
-    const hex = Buffer.from(encodedSeal).toString("hex");
-    console.log(hex);
+    // let encodedSeal = sealEncoder.encodeVisaToUTF8(inputs);
+    // const hex = Buffer.from(encodedSeal).toString("hex");
+    // console.log(hex);
+    console.log(
+      Buffer.from(sealEncoder.encodeVisa(headerInput)).toString("hex")
+    );
   };
 
+  const handleAddDocumentFeature = (event: MouseEvent<HTMLButtonElement>) => {
+    event?.preventDefault();
+    console.log("Add feature");
+    setDocumentFeatures([
+      ...documentFeatures,
+      {
+        id: Math.random(),
+        feature: {
+          tag: 0,
+          length: 0,
+          value: "",
+        },
+      },
+    ]);
+  };
+
+  const removeFeature = (index: number) => {
+    return (event: MouseEvent<HTMLButtonElement>) => {
+      event?.preventDefault();
+      console.log("Remove feature index: " + index);
+      setDocumentFeatures(
+        documentFeatures.filter((feature) => feature.id !== index)
+      );
+    };
+  };
+
+  const handleFeatureChange = (index: number) => {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      const key = event.target.name as keyof DocumentFeature;
+      const value = event.target.value;
+      const newDocumentFeatures = [...documentFeatures];
+      const feature = newDocumentFeatures.find(
+        (feature) => feature.id === index
+      );
+      if (feature) {
+        feature.feature[key] = value;
+        setDocumentFeatures(newDocumentFeatures);
+      }
+    };
+  };
   return (
     <>
       <h1 className="text-3xl font-bold underline">German Visa form</h1>
@@ -73,7 +118,7 @@ export default function GermanVisa() {
         <div className="items-center">
           <label htmlFor="certificateReference">Certificate reference:</label>
           <input
-            type="number"
+            type="string"
             id="certificateReference"
             name="certificateReference"
             onChange={handleChange}
@@ -122,6 +167,35 @@ export default function GermanVisa() {
             name="documentTypeCategory"
             onChange={handleChange}
           />
+        </div>
+
+        <button onClick={handleAddDocumentFeature}>Add feature</button>
+
+        <div className="items-center">
+          {documentFeatures.map((feature) => {
+            const index = feature.id;
+            return (
+              <>
+                <div key={index}>Document Feature</div>
+                <input
+                  type="text"
+                  name="tag"
+                  onChange={handleFeatureChange(index)}
+                />
+                <input
+                  type="text"
+                  name="length"
+                  onChange={handleFeatureChange(index)}
+                />
+                <input
+                  type="text"
+                  name="value"
+                  onChange={handleFeatureChange(index)}
+                />
+                <button onClick={removeFeature(index)}>Remove Feature</button>
+              </>
+            );
+          })}
         </div>
 
         <button className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none">

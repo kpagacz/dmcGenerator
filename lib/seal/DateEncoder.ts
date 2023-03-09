@@ -5,10 +5,10 @@ export default class DateEncoder {
     const day = date.getDate();
 
     // Log year, month and day
-    console.log("year: ", year, "month: ", month, "day: ", day);
+    // console.log("year: ", year, "month: ", month, "day: ", day);
 
     // Concatenate year, month and day as a single number
-    const concatenated = parseInt(month.toString() + day.toString() + year.toString());
+    const concatenated = parseInt(month.toString().padStart(2, "0") + day.toString().padStart(2, "0") + year.toString());
 
     const buffer = Buffer.alloc(8);
     // console.log("number: ", concatenated);
