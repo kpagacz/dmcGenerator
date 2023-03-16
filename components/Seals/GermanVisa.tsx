@@ -103,100 +103,101 @@ export default function GermanVisa() {
         className="w-full max-w-xl flex-row space-y-4"
         onSubmit={handleSubmit}
       >
-        <div className="items-center">
-          <label htmlFor="magicConstant">Magic constant:</label>
-          <input
-            type="number"
-            id="magicConstant"
-            name="magicConstant"
-            onChange={handleChange}
-          />
-        </div>
+        <>
+          <div className="items-center">
+            <label htmlFor="magicConstant">Magic constant:</label>
+            <input
+              type="number"
+              id="magicConstant"
+              name="magicConstant"
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="items-center">
-          <label htmlFor="version">Version:</label>
-          <input
-            type="number"
-            id="version"
-            name="version"
-            onChange={handleChange}
-          />
-        </div>
+          <div className="items-center">
+            <label htmlFor="version">Version:</label>
+            <input
+              type="number"
+              id="version"
+              name="version"
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="items-center">
-          <label htmlFor="countryId">Country ID:</label>
-          <input
-            type="text"
-            id="countryId"
-            name="countryId"
-            onChange={handleChange}
-          />
-        </div>
+          <div className="items-center">
+            <label htmlFor="countryId">Country ID:</label>
+            <input
+              type="text"
+              id="countryId"
+              name="countryId"
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="items-center">
-          <label htmlFor="signer">Signer:</label>
-          <input
-            type="text"
-            id="signer"
-            name="signer"
-            onChange={handleChange}
-          />
-        </div>
+          <div className="items-center">
+            <label htmlFor="signer">Signer:</label>
+            <input
+              type="text"
+              id="signer"
+              name="signer"
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="items-center">
-          <label htmlFor="certificateReference">Certificate reference:</label>
-          <input
-            type="string"
-            id="certificateReference"
-            name="certificateReference"
-            onChange={handleChange}
-          />
-        </div>
+          <div className="items-center">
+            <label htmlFor="certificateReference">Certificate reference:</label>
+            <input
+              type="string"
+              id="certificateReference"
+              name="certificateReference"
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="items-center">
-          <label htmlFor="documentIssueDate">Document issue date:</label>
-          <input
-            type="date"
-            id="documentIssueDate"
-            name="documentIssueDate"
-            onChange={handleChange}
-          />
-        </div>
+          <div className="items-center">
+            <label htmlFor="documentIssueDate">Document issue date:</label>
+            <input
+              type="date"
+              id="documentIssueDate"
+              name="documentIssueDate"
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="items-center">
-          <label htmlFor="signatureCreationDate">
-            Signature creation date:
-          </label>
-          <input
-            type="date"
-            id="signatureCreationDate"
-            name="signatureCreationDate"
-            onChange={handleChange}
-          />
-        </div>
+          <div className="items-center">
+            <label htmlFor="signatureCreationDate">
+              Signature creation date:
+            </label>
+            <input
+              type="date"
+              id="signatureCreationDate"
+              name="signatureCreationDate"
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="items-center">
-          <label htmlFor="documentFeatureDefinitionReference">
-            Document Feature Definition Reference:
-          </label>
-          <input
-            type="number"
-            id="documentFeatureDefinitionReference"
-            name="documentFeatureDefinitionReference"
-            onChange={handleChange}
-          />
-        </div>
+          <div className="items-center">
+            <label htmlFor="documentFeatureDefinitionReference">
+              Document Feature Definition Reference:
+            </label>
+            <input
+              type="number"
+              id="documentFeatureDefinitionReference"
+              name="documentFeatureDefinitionReference"
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="items-center">
-          <label htmlFor="documentTypeCategory">Document Type Category:</label>
-          <input
-            type="number"
-            id="documentTypeCategory"
-            name="documentTypeCategory"
-            onChange={handleChange}
-          />
-        </div>
-
+          <div className="items-center">
+            <label htmlFor="documentTypeCategory">Document Type Category:</label>
+            <input
+              type="number"
+              id="documentTypeCategory"
+              name="documentTypeCategory"
+              onChange={handleChange}
+            />
+          </div>
+        </>
         <button onClick={handleAddDocumentFeature}>Add feature</button>
 
         <div className="items-center">
