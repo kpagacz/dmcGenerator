@@ -20,11 +20,11 @@ export default function GermanVisa() {
     console.log(headerInput);
 
     const sealEncoder = new SealEncoder();
-    // let encodedSeal = sealEncoder.encodeVisaToUTF8(inputs);
-    // const hex = Buffer.from(encodedSeal).toString("hex");
-    // console.log(hex);
+
+    let visa = headerInput
+    visa.documentFeatures = [...documentFeatures.map((feature) => feature.feature)]
     console.log(
-      Buffer.from(sealEncoder.encodeVisa(headerInput)).toString("hex")
+      Buffer.from(sealEncoder.encodeVisa(visa)).toString("hex")
     );
   };
 
@@ -54,20 +54,48 @@ export default function GermanVisa() {
     };
   };
 
-  const handleFeatureChange = (index: number) => {
+  const handleFeatureTagChange = (index: number) => {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
-      const key = event.target.name as keyof DocumentFeature;
       const value = event.target.value;
       const newDocumentFeatures = [...documentFeatures];
       const feature = newDocumentFeatures.find(
         (feature) => feature.id === index
       );
       if (feature) {
-        feature.feature[key] = value;
+        feature.feature.tag = Number(value);
         setDocumentFeatures(newDocumentFeatures);
       }
     };
   };
+
+  const handleFeatureLengthChange = (index: number) => {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      const newDocumentFeatures = [...documentFeatures];
+      const feature = newDocumentFeatures.find(
+        (feature) => feature.id === index
+      );
+      if (feature) {
+        feature.feature.length = Number(value);
+        setDocumentFeatures(newDocumentFeatures);
+      }
+    };
+  };
+
+  const handleFeatureValueChange = (index: number) => {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      const newDocumentFeatures = [...documentFeatures];
+      const feature = newDocumentFeatures.find(
+        (feature) => feature.id === index
+      );
+      if (feature) {
+        feature.feature.value = value;
+        setDocumentFeatures(newDocumentFeatures);
+      }
+    };
+  };
+
   return (
     <>
       <h1 className="text-3xl font-bold underline">German Visa form</h1>
@@ -180,17 +208,20 @@ export default function GermanVisa() {
                 <input
                   type="text"
                   name="tag"
-                  onChange={handleFeatureChange(index)}
+                  placeholder="Tag"
+                  onChange={handleFeatureTagChange(index)}
                 />
                 <input
                   type="text"
                   name="length"
-                  onChange={handleFeatureChange(index)}
+                  placeholder="Length"
+                  onChange={handleFeatureLengthChange(index)}
                 />
                 <input
                   type="text"
                   name="value"
-                  onChange={handleFeatureChange(index)}
+                  placeholder="Value"
+                  onChange={handleFeatureValueChange(index)}
                 />
                 <button onClick={removeFeature(index)}>Remove Feature</button>
               </>
