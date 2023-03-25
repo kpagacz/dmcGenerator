@@ -1,18 +1,17 @@
 import Visa from "@/lib/types/Visa";
 import C40 from "@/lib/seal/C40";
 import DateEncoder from "@/lib/seal/DateEncoder";
-import { createSign, createVerify, generateKeyPairSync } from "crypto";
 
 export default class SealEncoder {
   private textDecoder = new TextDecoder("UTF-8");
   private c40 = new C40();
   private dateEncoder = new DateEncoder();
 
-  encodeVisaToUTF8(visa: Visa): string {
-    return this.textDecoder.decode(this.encodeVisa(visa));
+  async encodeVisaToUTF8(visa: Visa): Promise<string> {
+    return this.textDecoder.decode(await this.encodeVisa(visa));
   }
 
-  encodeVisa(visa: Visa): Uint8Array {
+  async encodeVisa(visa: Visa): Promise<Uint8Array> {
     const encodedSeal = [];
 
     // Header
@@ -35,9 +34,22 @@ export default class SealEncoder {
     })
 
     // Signature
-    // TODO: implement signature
+    let { signature } = await fetch("/api/sign", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        seal: Buffer.from(encodedSeal).toString("base64"),
+      }),
+    }).then(async (response) => {
+      const { signature } = await response.json()
+      return { signature: Buffer.from(signature, "base64")}
+    });
+    encodedSeal.push(255)
+    encodedSeal.push(signature.length)
+    encodedSeal.push(...signature)
 
-    console.log(encodedSeal);
     return Uint8Array.from(encodedSeal);
   }
 
@@ -45,6 +57,7 @@ export default class SealEncoder {
     return new Uint8Array(hex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));
   }
 
+  // TODO: fix this long form of encoding in DER TLV
   private encodeLength(length: number): Uint8Array {
     if (length <= 255) {
       return Uint8Array.from([length]);
